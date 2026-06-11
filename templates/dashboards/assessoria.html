@@ -1,0 +1,14 @@
+{% extends "base_assessoria.html" %}
+{% load aleica_tags %}
+{% block content %}
+<div class="kpi-grid">
+    <div class="kpi-card"><i class="bi bi-buildings"></i><span>Empresas</span><strong>{{ metrics.empresas }}</strong></div>
+    <div class="kpi-card"><i class="bi bi-people"></i><span>Clientes</span><strong>{{ metrics.clientes }}</strong></div>
+    <div class="kpi-card"><i class="bi bi-lightning-charge"></i><span>Oportunidades</span><strong>{{ metrics.oportunidades }}</strong></div>
+    <div class="kpi-card"><i class="bi bi-cash-coin"></i><span>Receita potencial</span><strong>{{ metrics.receita|money }}</strong></div>
+</div>
+<div class="grid-2 mt-4">
+    <div class="panel"><div class="panel-heading"><h2>CRM</h2></div><p>Carteiras, clientes e oportunidades da assessoria.</p></div>
+    <div class="panel"><div class="panel-heading"><h2>Administracao</h2></div><p>Usuarios, perfis, contratos, financeiro e relatorios internos.</p></div>
+</div>
+{% endblock %}

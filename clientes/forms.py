@@ -9,6 +9,7 @@ class ClienteForm(forms.ModelForm):
         fields = [
             "empresa",
             "nome",
+            "cnpj",
             "telefone",
             "whatsapp",
             "email",
@@ -22,6 +23,7 @@ class ClienteForm(forms.ModelForm):
         widgets = {
             "empresa": forms.Select(attrs={"class": "form-select"}),
             "nome": forms.TextInput(attrs={"class": "form-control"}),
+            "cnpj": forms.TextInput(attrs={"class": "form-control", "data-cnpj-field": "true", "placeholder": "00.000.000/0001-00"}),
             "telefone": forms.TextInput(attrs={"class": "form-control"}),
             "whatsapp": forms.TextInput(attrs={"class": "form-control"}),
             "email": forms.EmailInput(attrs={"class": "form-control"}),

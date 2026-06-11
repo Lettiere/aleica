@@ -1,2 +1,38 @@
 {% extends "core/base_app.html" %}
-{% block content %}<div class="panel"><div class="panel-heading"><h2>Cliente</h2></div><form method="post" class="form-grid">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary">Salvar</button></form></div>{% endblock %}
+{% block content %}
+<div class="panel">
+    <div class="panel-heading"><h2>Cliente</h2><button class="btn btn-light" type="button" data-buscar-cnpj>Buscar Dados do CNPJ</button></div>
+    <form method="post" class="form-grid">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary">Salvar</button>
+    </form>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+document.querySelector("[data-buscar-cnpj]")?.addEventListener("click", async () => {
+    const cnpj = document.querySelector("[data-cnpj-field]")?.value || "";
+    const button = document.querySelector("[data-buscar-cnpj]");
+    button.disabled = true;
+    button.textContent = "Buscando...";
+    try {
+        const response = await fetch(`{% url 'clientes_buscar_cnpj' %}?cnpj=${encodeURIComponent(cnpj)}`);
+        const data = await response.json();
+        if (!data.ok) throw new Error(data.erro || "Nao foi possivel buscar o CNPJ.");
+        const set = (name, value) => {
+            const field = document.querySelector(`[name="${name}"]`);
+            if (field && value) field.value = value;
+        };
+        set("nome", data.nome);
+        set("email", data.email);
+        set("telefone", data.telefone);
+    } catch (error) {
+        alert(error.message);
+    } finally {
+        button.disabled = false;
+        button.textContent = "Buscar Dados do CNPJ";
+    }
+});
+</script>
+{% endblock %}

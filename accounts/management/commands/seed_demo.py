@@ -8,6 +8,7 @@ from django.utils import timezone
 
 from accounts.models import PerfilUsuario
 from clientes.models import Cliente
+from core.models import Perfil, Usuario
 from empresas.models import Empresa
 from inteligencia.models import SnapshotInteligencia
 from inteligencia.services import (
@@ -32,16 +33,30 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("Seed demo concluido."))
 
     def criar_usuarios(self):
+        perfis = {
+            codigo: Perfil.objects.get_or_create(nome_perfil=codigo, defaults={"descricao": label})[0]
+            for codigo, label in Perfil.Codigo.choices
+        }
         users = [
-            ("aleixa.master", "Aleica", "Master", "aleixa@master.com.br", "eunaosei", PerfilUsuario.Perfil.MASTER),
-            ("carina.fernandes", "Carina", "Fernandes", "carina@master.com.br", "aleica2026", PerfilUsuario.Perfil.GESTORA_RELACIONAMENTO),
+            ("aleixa.master", "Aleica", "Master", "aleixa@master.com.br", "eunaosei", PerfilUsuario.Perfil.MASTER, "ROOT"),
+            ("carina.fernandes", "Carina", "Fernandes", "carina@master.com.br", "aleica2026", PerfilUsuario.Perfil.GESTORA_RELACIONAMENTO, "OPERADOR"),
         ]
-        for username, first_name, last_name, email, password, perfil in users:
+        for username, first_name, last_name, email, password, perfil, perfil_saas in users:
             user, created = User.objects.get_or_create(username=username, defaults={"email": email, "first_name": first_name, "last_name": last_name, "is_staff": True, "is_superuser": perfil == PerfilUsuario.Perfil.MASTER})
             if created:
                 user.set_password(password)
                 user.save()
             PerfilUsuario.objects.update_or_create(usuario=user, defaults={"perfil": perfil})
+            Usuario.objects.update_or_create(
+                email=email,
+                defaults={
+                    "auth_user": user,
+                    "perfil": perfis[perfil_saas],
+                    "nome": f"{first_name} {last_name}",
+                    "senha_hash": user.password,
+                    "ativo": True,
+                },
+            )
 
     def criar_dados(self):
         segmentos = [
@@ -109,6 +124,7 @@ class Command(BaseCommand):
             )
             oportunidade = gerar_oportunidades(cliente)
             SnapshotInteligencia.objects.create(
+                empresa=cliente.empresa,
                 cliente=cliente,
                 score_aleica=calcular_score_aleica(cliente),
                 risco=calcular_risco(cliente),
@@ -119,6 +135,7 @@ class Command(BaseCommand):
             )
             if i % 3 == 0:
                 HistoricoContato.objects.create(
+                    empresa=cliente.empresa,
                     cliente=cliente,
                     usuario=carina,
                     oportunidade=oportunidade,

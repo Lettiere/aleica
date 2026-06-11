@@ -145,6 +145,7 @@ def atualizar_inteligencia_empresa(empresa):
     for cliente in Cliente.objects.filter(empresa=empresa):
         snapshots.append(
             SnapshotInteligencia.objects.create(
+                empresa=cliente.empresa,
                 cliente=cliente,
                 score_aleica=calcular_score_aleica(cliente),
                 risco=calcular_risco(cliente),

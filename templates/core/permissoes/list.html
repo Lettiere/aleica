@@ -1,0 +1,12 @@
+{% extends "core/base_app.html" %}
+{% block content %}
+<div class="panel">
+    <div class="panel-heading"><h2>Permissoes</h2><a class="btn btn-primary" href="{% url 'permissoes_create' %}">Nova permissao</a></div>
+    <div class="table-responsive"><table class="table"><thead><tr><th>Codigo</th><th>Descricao</th><th>Status</th><th></th></tr></thead><tbody>
+    {% for permissao in page_obj %}
+        <tr><td><strong>{{ permissao.codigo }}</strong></td><td>{{ permissao.descricao }}</td><td>{{ permissao.ativo|yesno:"Ativa,Inativa" }}</td><td><a class="btn btn-sm btn-light" href="{% url 'permissoes_update' permissao.pk %}">Editar</a></td></tr>
+    {% empty %}<tr><td colspan="4"><div class="empty-state">Nenhuma permissao encontrada.</div></td></tr>{% endfor %}
+    </tbody></table></div>
+</div>
+{% include "core/pagination.html" %}
+{% endblock %}

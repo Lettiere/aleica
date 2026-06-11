@@ -1,0 +1,12 @@
+{% extends "core/base_app.html" %}
+{% block content %}
+<div class="panel">
+    <div class="panel-heading"><h2>{{ title }}</h2></div>
+    <p>Confirma excluir <strong>{{ object }}</strong> da operacao normal da plataforma?</p>
+    <form method="post" class="action-buttons">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Excluir</button>
+        <a class="btn btn-light" href="{{ request.META.HTTP_REFERER|default:'/' }}">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

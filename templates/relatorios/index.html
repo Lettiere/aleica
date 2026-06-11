@@ -1,6 +1,9 @@
 {% extends "core/base_app.html" %}
 {% load aleica_tags %}
 {% block content %}
+<div class="panel mb-4">
+    <div class="panel-heading"><h2>Exportacoes</h2><a class="btn btn-primary" href="{% url 'relatorios_exportar_clientes' %}">Exportar clientes CSV</a></div>
+</div>
 <div class="reports-grid">
 {% for title, rows in reports.items %}
     <div class="panel">

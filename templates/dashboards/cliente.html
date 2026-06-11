@@ -1,0 +1,14 @@
+{% extends "base_cliente.html" %}
+{% load aleica_tags %}
+{% block content %}
+<div class="kpi-grid">
+    <div class="kpi-card"><i class="bi bi-people"></i><span>Clientes</span><strong>{{ metrics.clientes }}</strong></div>
+    <div class="kpi-card"><i class="bi bi-lightning-charge"></i><span>Oportunidades</span><strong>{{ metrics.oportunidades }}</strong></div>
+    <div class="kpi-card"><i class="bi bi-cash-coin"></i><span>Receita potencial</span><strong>{{ metrics.receita|money }}</strong></div>
+    <div class="kpi-card"><i class="bi bi-chat-dots"></i><span>Atendimentos</span><strong>{{ metrics.contatos }}</strong></div>
+</div>
+<div class="grid-2 mt-4">
+    <div class="panel"><div class="panel-heading"><h2>Documentos</h2></div><p>Central de documentos e contratos da empresa.</p></div>
+    <div class="panel"><div class="panel-heading"><h2>Solicitacoes</h2></div><p>Acompanhe solicitacoes, relatorios e atendimento.</p></div>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "core/base_app.html" %}
+{% block content %}
+<div class="panel">
+    <div class="panel-heading"><h2>Documentos</h2><a class="btn btn-primary" href="{% url 'documentos_upload' %}">Upload</a></div>
+    <form class="filter-bar"><input class="form-control" name="q" value="{{ q }}" placeholder="Buscar documento, categoria ou empresa"><button class="btn btn-light">Filtrar</button></form>
+    <div class="table-responsive"><table class="table"><thead><tr><th>Documento</th><th>Empresa</th><th>Categoria</th><th>Enviado em</th><th></th></tr></thead><tbody>
+    {% for documento in page_obj %}
+        <tr><td><strong>{{ documento.titulo }}</strong><span>{{ documento.arquivo.name }}</span></td><td>{{ documento.empresa }}</td><td>{{ documento.categoria|default:"-" }}</td><td>{{ documento.created_at|date:"d/m/Y H:i" }}</td><td><a class="btn btn-sm btn-light" href="{% url 'documentos_download' documento.pk %}">Download</a></td></tr>
+    {% empty %}<tr><td colspan="5"><div class="empty-state">Nenhum documento encontrado.</div></td></tr>{% endfor %}
+    </tbody></table></div>
+</div>
+{% include "core/pagination.html" %}
+{% endblock %}
