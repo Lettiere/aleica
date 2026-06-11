@@ -1,0 +1,11 @@
+{% extends "core/base_app.html" %}
+{% block content %}
+<div class="panel">
+    <div class="panel-heading"><h2>Historico de Contatos</h2><a class="btn btn-primary" href="{% url 'contato_create' %}">Novo contato</a></div>
+    <div class="timeline">
+    {% for item in historicos %}
+        <div class="timeline-item"><strong>{{ item.cliente.nome }}</strong><span>{{ item.data_contato }} · {{ item.tipo_contato }} · {{ item.resultado }}</span><p>{{ item.observacao }}</p></div>
+    {% empty %}<div class="empty-state">Nenhum contato registrado.</div>{% endfor %}
+    </div>
+</div>
+{% endblock %}

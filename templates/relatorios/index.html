@@ -1,0 +1,20 @@
+{% extends "core/base_app.html" %}
+{% load aleica_tags %}
+{% block content %}
+<div class="reports-grid">
+{% for title, rows in reports.items %}
+    <div class="panel">
+        <div class="panel-heading"><h2>{{ title }}</h2></div>
+        <div class="report-list">
+        {% for row in rows %}
+            <div>
+                <strong>{% if row.cliente %}{{ row.cliente.nome }}{% elif row.nome %}{{ row.nome }}{% else %}{{ row.empresa__segmento }}{% endif %}</strong>
+                <span>{% if row.empresa %}{{ row.empresa.nome_fantasia }}{% elif row.cliente %}{{ row.cliente.empresa.nome_fantasia }}{% else %}{{ row.total }} oportunidades{% endif %}</span>
+                <em>{% if row.valor_potencial %}{{ row.valor_potencial|money }}{% elif row.valor_total_gasto %}{{ row.valor_total_gasto|money }}{% elif row.receita %}{{ row.receita|money }}{% else %}{{ row.resultado }}{% endif %}</em>
+            </div>
+        {% empty %}<div class="empty-state compact">Sem dados.</div>{% endfor %}
+        </div>
+    </div>
+{% endfor %}
+</div>
+{% endblock %}

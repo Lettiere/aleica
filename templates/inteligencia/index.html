@@ -1,0 +1,14 @@
+{% extends "core/base_app.html" %}
+{% load aleica_tags %}
+{% block content %}
+<div class="kpi-grid compact">
+    <div class="kpi-card"><span>Score medio</span><strong>{{ score_medio }}</strong></div>
+    <div class="kpi-card"><span>Receita potencial</span><strong>{{ receita_potencial|money }}</strong></div>
+</div>
+<div class="intel-grid mt-4">
+    <div class="panel"><div class="panel-heading"><h2>Maior risco</h2></div><div class="mini-list">{% for item in maior_risco %}<a href="{% url 'clientes_detail' item.cliente.pk %}"><strong>{{ item.cliente.nome }}</strong><span>{{ item.risco }} · {{ item.probabilidade }}%</span><em>{{ item.valor|money }}</em></a>{% endfor %}</div></div>
+    <div class="panel"><div class="panel-heading"><h2>Clientes VIP</h2></div><div class="mini-list">{% for item in vips %}<a href="{% url 'clientes_detail' item.cliente.pk %}"><strong>{{ item.cliente.nome }}</strong><span>{{ item.cliente.empresa.nome_fantasia }}</span><em>{{ item.cliente.valor_total_gasto|money }}</em></a>{% endfor %}</div></div>
+    <div class="panel"><div class="panel-heading"><h2>Inativos</h2></div><div class="mini-list">{% for item in inativos %}<a href="{% url 'clientes_detail' item.cliente.pk %}"><strong>{{ item.cliente.nome }}</strong><span>{{ item.risco }}</span><em>{{ item.probabilidade }}%</em></a>{% endfor %}</div></div>
+    <div class="panel"><div class="panel-heading"><h2>Reativacao</h2></div><div class="mini-list">{% for op in reativacao %}<a href="{% url 'oportunidades_detail' op.pk %}"><strong>{{ op.cliente.nome }}</strong><span>{{ op.tipo }}</span><em>{{ op.valor_potencial|money }}</em></a>{% endfor %}</div></div>
+</div>
+{% endblock %}

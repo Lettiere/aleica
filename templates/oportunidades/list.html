@@ -1,0 +1,26 @@
+{% extends "core/base_app.html" %}
+{% load aleica_tags %}
+{% block content %}
+<div class="panel">
+    <div class="panel-heading"><h2>Oportunidades</h2><span>{{ page_obj.paginator.count }} registros</span></div>
+    <form class="filter-bar">
+        <select class="form-select" name="prioridade"><option value="">Prioridade</option><option value="critico">Critico</option><option value="alto">Alto</option><option value="medio">Medio</option><option value="baixo">Baixo</option></select>
+        <select class="form-select" name="status"><option value="">Status</option><option value="aberta">Aberta</option><option value="em_andamento">Em andamento</option><option value="concluida">Concluida</option></select>
+        <button class="btn btn-light">Filtrar</button>
+    </form>
+    <div class="table-responsive"><table class="table"><thead><tr><th>Cliente</th><th>Tipo</th><th>Prioridade</th><th>Prob.</th><th>Valor</th><th>Status</th><th></th></tr></thead><tbody>
+    {% for op in page_obj %}
+        <tr>
+            <td><strong>{{ op.cliente.nome }}</strong><span>{{ op.empresa.nome_fantasia }}</span></td>
+            <td>{{ op.tipo }}<span>{{ op.motivo }}</span></td>
+            <td><span class="badge {{ op.prioridade|badge_class }}">{{ op.prioridade }}</span></td>
+            <td>{{ op.probabilidade_perda }}%</td>
+            <td>{{ op.valor_potencial|money }}</td>
+            <td><span class="badge {{ op.status|badge_class }}">{{ op.status }}</span></td>
+            <td><a class="btn btn-sm btn-light" href="{% url 'oportunidades_detail' op.pk %}">Abrir</a></td>
+        </tr>
+    {% empty %}<tr><td colspan="7"><div class="empty-state">Nenhuma oportunidade aberta.</div></td></tr>{% endfor %}
+    </tbody></table></div>
+</div>
+{% include "core/pagination.html" %}
+{% endblock %}

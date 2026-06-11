@@ -1,0 +1,7 @@
+{% if page_obj.paginator.num_pages > 1 %}
+<nav class="pagination-wrap">
+    {% for number in page_obj.paginator.page_range %}
+        <a class="{% if page_obj.number == number %}active{% endif %}" href="?page={{ number }}">{{ number }}</a>
+    {% endfor %}
+</nav>
+{% endif %}

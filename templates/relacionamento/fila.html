@@ -1,0 +1,32 @@
+{% extends "core/base_app.html" %}
+{% load aleica_tags %}
+{% block content %}
+<div class="role-banner">
+    <i class="bi bi-person-check"></i>
+    <div><h2>Fila de Relacionamento da Carine</h2><p>Prioridade, contexto e acao sugerida para contato humano.</p></div>
+</div>
+{% for prioridade, oportunidades in grupos.items %}
+<div class="panel mt-4">
+    <div class="panel-heading"><h2>{{ prioridade|title }}</h2><span>{{ oportunidades.count }} oportunidades</span></div>
+    <div class="table-responsive"><table class="table"><thead><tr><th>Cliente</th><th>Risco</th><th>Prob.</th><th>Valor</th><th>Motivo</th><th>Acao</th><th></th></tr></thead><tbody>
+    {% for op in oportunidades %}
+        <tr>
+            <td><strong>{{ op.cliente.nome }}</strong><span>{{ op.empresa.nome_fantasia }} · {{ op.cliente.whatsapp|default:op.cliente.telefone }}</span></td>
+            <td><span class="badge {{ op.risco|badge_class }}">{{ op.risco }}</span></td>
+            <td>{{ op.probabilidade_perda }}%</td>
+            <td>{{ op.valor_potencial|money }}</td>
+            <td class="reason">{{ op.motivo }}</td>
+            <td>{{ op.acao_sugerida }}</td>
+            <td class="action-buttons">
+                {% wa_link op.cliente.whatsapp|default:op.cliente.telefone op.cliente.nome as link %}
+                <a class="btn btn-sm btn-success" href="{{ link }}" target="_blank"><i class="bi bi-whatsapp"></i></a>
+                <a class="btn btn-sm btn-primary" href="{% url 'fila_contatado' op.pk %}"><i class="bi bi-check2"></i></a>
+                <a class="btn btn-sm btn-light" href="{% url 'fila_reagendar' op.pk %}"><i class="bi bi-calendar-plus"></i></a>
+                <a class="btn btn-sm btn-light" href="{% url 'historico_contatos' %}?cliente={{ op.cliente.pk }}"><i class="bi bi-clock-history"></i></a>
+            </td>
+        </tr>
+    {% empty %}<tr><td colspan="7"><div class="empty-state compact">Nenhuma acao nesta prioridade.</div></td></tr>{% endfor %}
+    </tbody></table></div>
+</div>
+{% endfor %}
+{% endblock %}

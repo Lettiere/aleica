@@ -1,0 +1,2 @@
+{% extends "core/base_app.html" %}
+{% block content %}<div class="panel"><div class="panel-heading"><h2>{{ empresa.nome_fantasia }}</h2><a class="btn btn-light" href="{% url 'empresas_update' empresa.pk %}">Editar</a></div><p>{{ empresa.segmento }} · {{ empresa.cidade }} {{ empresa.estado }}</p><p>{{ empresa.email }} {{ empresa.telefone }}</p></div>{% endblock %}

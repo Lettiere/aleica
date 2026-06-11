@@ -1,0 +1,13 @@
+{% extends "core/base_app.html" %}
+{% block content %}
+<div class="panel">
+    <div class="panel-heading"><h2>Empresas</h2><a class="btn btn-primary" href="{% url 'empresas_create' %}">Nova empresa</a></div>
+    <form class="filter-bar"><input class="form-control" name="q" value="{{ q }}" placeholder="Buscar empresa, segmento ou cidade"><button class="btn btn-light">Filtrar</button></form>
+    <div class="table-responsive"><table class="table"><thead><tr><th>Empresa</th><th>Segmento</th><th>Cidade</th><th>Status</th><th></th></tr></thead><tbody>
+    {% for empresa in page_obj %}
+        <tr><td><strong>{{ empresa.nome_fantasia }}</strong><span>{{ empresa.razao_social }}</span></td><td>{{ empresa.segmento }}</td><td>{{ empresa.cidade }} {{ empresa.estado }}</td><td>{{ empresa.status }}</td><td><a class="btn btn-sm btn-light" href="{% url 'empresas_detail' empresa.pk %}">Abrir</a></td></tr>
+    {% empty %}<tr><td colspan="5"><div class="empty-state">Nenhuma empresa encontrada.</div></td></tr>{% endfor %}
+    </tbody></table></div>
+</div>
+{% include "core/pagination.html" %}
+{% endblock %}

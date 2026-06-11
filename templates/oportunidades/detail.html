@@ -1,0 +1,20 @@
+{% extends "core/base_app.html" %}
+{% load aleica_tags %}
+{% block content %}
+<div class="panel">
+    <div class="panel-heading"><h2>{{ oportunidade.tipo }}</h2><span class="badge {{ oportunidade.prioridade|badge_class }}">{{ oportunidade.prioridade }}</span></div>
+    <p><strong>{{ oportunidade.cliente.nome }}</strong> · {{ oportunidade.empresa.nome_fantasia }}</p>
+    <p>{{ oportunidade.motivo }}</p>
+    <p class="reason">{{ oportunidade.acao_sugerida }}</p>
+    <div class="kpi-grid compact">
+        <div class="kpi-card"><span>Score</span><strong>{{ oportunidade.score }}</strong></div>
+        <div class="kpi-card"><span>Probabilidade de perda</span><strong>{{ oportunidade.probabilidade_perda }}%</strong></div>
+        <div class="kpi-card"><span>Valor potencial</span><strong>{{ oportunidade.valor_potencial|money }}</strong></div>
+    </div>
+    <div class="action-buttons mt-3">
+        <a class="btn btn-success" href="{% url 'fila_contatado' oportunidade.pk %}">Marcar contatado</a>
+        <a class="btn btn-light" href="{% url 'oportunidades_status' oportunidade.pk 'concluida' %}">Concluir</a>
+        <a class="btn btn-light" href="{% url 'oportunidades_status' oportunidade.pk 'perdida' %}">Perdida</a>
+    </div>
+</div>
+{% endblock %}
