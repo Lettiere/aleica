@@ -1,0 +1,11 @@
+{% extends "core/base_app.html" %}
+{% block content %}
+<div class="panel">
+    <div class="panel-heading"><h2>Importar clientes</h2></div>
+    <form method="post" enctype="multipart/form-data" class="form-grid">
+        {% csrf_token %}
+        <label>Arquivo CSV<input class="form-control" type="file" name="arquivo" accept=".csv" required></label>
+        <button class="btn btn-primary">Importar</button>
+    </form>
+</div>
+{% endblock %}

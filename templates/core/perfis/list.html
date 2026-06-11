@@ -1,0 +1,12 @@
+{% extends "core/base_app.html" %}
+{% block content %}
+<div class="panel">
+    <div class="panel-heading"><h2>Perfis</h2><a class="btn btn-primary" href="{% url 'perfis_create' %}">Novo perfil</a></div>
+    <div class="table-responsive"><table class="table"><thead><tr><th>Perfil</th><th>Descricao</th><th>Status</th><th></th></tr></thead><tbody>
+    {% for perfil in page_obj %}
+        <tr><td><strong>{{ perfil.nome_perfil }}</strong></td><td>{{ perfil.descricao }}</td><td>{{ perfil.ativo|yesno:"Ativo,Inativo" }}</td><td><a class="btn btn-sm btn-light" href="{% url 'perfis_update' perfil.pk %}">Editar</a></td></tr>
+    {% empty %}<tr><td colspan="4"><div class="empty-state">Nenhum perfil encontrado.</div></td></tr>{% endfor %}
+    </tbody></table></div>
+</div>
+{% include "core/pagination.html" %}
+{% endblock %}

@@ -28,5 +28,5 @@ def oportunidade_status(request, pk, status):
     allowed = {choice[0] for choice in Oportunidade.Status.choices}
     if status in allowed:
         oportunidade.status = status
-        oportunidade.save(update_fields=["status", "atualizado_em"])
+        oportunidade.save(update_fields=["status", "updated_at"])
     return redirect(request.META.get("HTTP_REFERER", "oportunidades_list"))

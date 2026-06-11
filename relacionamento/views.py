@@ -31,6 +31,7 @@ def marcar_contatado(request, pk):
     oportunidade = get_object_or_404(Oportunidade.objects.select_related("cliente"), pk=pk)
     now = timezone.now()
     HistoricoContato.objects.create(
+        empresa=oportunidade.empresa,
         cliente=oportunidade.cliente,
         oportunidade=oportunidade,
         usuario=request.user,
@@ -42,10 +43,10 @@ def marcar_contatado(request, pk):
         data_proxima_acao=(now + timedelta(days=15)).date(),
     )
     oportunidade.status = Oportunidade.Status.EM_ANDAMENTO
-    oportunidade.save(update_fields=["status", "atualizado_em"])
+    oportunidade.save(update_fields=["status", "updated_at"])
     oportunidade.cliente.ultimo_atendimento = now.date()
     oportunidade.cliente.status = Cliente.Status.REATIVADO
-    oportunidade.cliente.save(update_fields=["ultimo_atendimento", "status", "atualizado_em"])
+    oportunidade.cliente.save(update_fields=["ultimo_atendimento", "status", "updated_at"])
     return redirect("fila_carine")
 
 
@@ -53,7 +54,7 @@ def marcar_contatado(request, pk):
 def reagendar(request, pk):
     oportunidade = get_object_or_404(Oportunidade, pk=pk)
     oportunidade.data_reagendamento = (timezone.now() + timedelta(days=7)).date()
-    oportunidade.save(update_fields=["data_reagendamento", "atualizado_em"])
+    oportunidade.save(update_fields=["data_reagendamento", "updated_at"])
     return redirect("fila_carine")
 
 
@@ -71,9 +72,10 @@ def contato_form(request):
     form = HistoricoContatoForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         contato = form.save(commit=False)
+        contato.empresa = contato.cliente.empresa
         contato.usuario = request.user
         contato.save()
         contato.cliente.ultimo_atendimento = contato.data_contato.date()
-        contato.cliente.save(update_fields=["ultimo_atendimento", "atualizado_em"])
+        contato.cliente.save(update_fields=["ultimo_atendimento", "updated_at"])
         return redirect("historico_contatos")
     return render(request, "relacionamento/form.html", {"form": form, "title": "Novo contato"})

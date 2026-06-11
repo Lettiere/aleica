@@ -472,9 +472,20 @@ body {
 }
 
 .action-buttons {
+    align-items: center;
     display: flex;
     flex-wrap: wrap;
     gap: .35rem;
+}
+
+.action-buttons form {
+    margin: 0;
+}
+
+.message-stack {
+    display: grid;
+    gap: .6rem;
+    margin-bottom: 1rem;
 }
 
 .empty-state {

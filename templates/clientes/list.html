@@ -2,11 +2,11 @@
 {% load aleica_tags %}
 {% block content %}
 <div class="panel">
-    <div class="panel-heading"><h2>Clientes</h2><a class="btn btn-primary" href="{% url 'clientes_create' %}">Novo cliente</a></div>
+    <div class="panel-heading"><h2>Clientes</h2><div class="action-buttons"><a class="btn btn-light" href="{% url 'clientes_import' %}">Importar</a><a class="btn btn-primary" href="{% url 'clientes_create' %}">Novo cliente</a></div></div>
     <form class="filter-bar"><input class="form-control" name="q" value="{{ q }}" placeholder="Buscar cliente"><select class="form-select" name="status"><option value="">Todos</option><option value="vip">VIP</option><option value="inativo">Inativos</option><option value="orcamento_abandonado">Orcamentos abandonados</option></select><button class="btn btn-light">Filtrar</button></form>
     <div class="table-responsive"><table class="table"><thead><tr><th>Cliente</th><th>Empresa</th><th>Status</th><th>Ultimo atendimento</th><th>Valor</th><th></th></tr></thead><tbody>
     {% for cliente in page_obj %}
-        <tr><td><strong>{{ cliente.nome }}</strong><span>{{ cliente.email }}</span></td><td>{{ cliente.empresa.nome_fantasia }}</td><td><span class="badge {{ cliente.status|badge_class }}">{{ cliente.status }}</span></td><td>{{ cliente.ultimo_atendimento|default:"-" }}</td><td>{{ cliente.valor_total_gasto|money }}</td><td><a class="btn btn-sm btn-light" href="{% url 'clientes_detail' cliente.pk %}">Abrir</a></td></tr>
+        <tr><td><strong>{{ cliente.nome }}</strong><span>{{ cliente.cnpj|default:cliente.email }}</span></td><td>{{ cliente.empresa.nome_fantasia }}</td><td><span class="badge {{ cliente.status|badge_class }}">{{ cliente.status }}</span></td><td>{{ cliente.ultimo_atendimento|default:"-" }}</td><td>{{ cliente.valor_total_gasto|money }}</td><td><a class="btn btn-sm btn-light" href="{% url 'clientes_detail' cliente.pk %}">Abrir</a></td></tr>
     {% empty %}<tr><td colspan="6"><div class="empty-state">Nenhum cliente encontrado.</div></td></tr>{% endfor %}
     </tbody></table></div>
 </div>

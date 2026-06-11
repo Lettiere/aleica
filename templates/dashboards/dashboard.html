@@ -9,6 +9,49 @@
     <div class="kpi-card"><i class="bi bi-cash-coin"></i><span>Receita potencial</span><strong>{{ metrics.receita|money }}</strong></div>
     <div class="kpi-card"><i class="bi bi-chat-dots"></i><span>Contatos</span><strong>{{ metrics.contatos }}</strong></div>
 </div>
+<div class="grid-3 mt-4">
+    <div class="panel">
+        <div class="panel-heading"><h2>Empresas</h2><a class="btn btn-sm btn-primary" href="{% url 'empresas_create' %}">Criar</a></div>
+        <div class="mini-list"><a href="{% url 'empresas_list' %}"><strong>Listar e editar empresas</strong><span>Cadastro multiempresa sem depender do Django Admin.</span></a></div>
+    </div>
+    <div class="panel">
+        <div class="panel-heading"><h2>Usuarios e acessos</h2><a class="btn btn-sm btn-primary" href="{% url 'usuarios_create' %}">Criar</a></div>
+        <div class="mini-list">
+            <a href="{% url 'usuarios_list' %}"><strong>Usuarios</strong><span>Criar, editar, ativar e desativar.</span></a>
+            <a href="{% url 'perfis_list' %}"><strong>Perfis</strong><span>Gerenciar perfis operacionais.</span></a>
+            <a href="{% url 'permissoes_list' %}"><strong>Permissoes</strong><span>Catalogo de permissoes da plataforma.</span></a>
+        </div>
+    </div>
+    <div class="panel">
+        <div class="panel-heading"><h2>Clientes</h2><a class="btn btn-sm btn-primary" href="{% url 'clientes_create' %}">Criar</a></div>
+        <div class="mini-list">
+            <a href="{% url 'clientes_list' %}"><strong>Listar clientes</strong><span>CRUD completo baseado em CNPJ.</span></a>
+            <a href="{% url 'clientes_import' %}"><strong>Importar clientes</strong><span>Entrada por arquivo CSV.</span></a>
+        </div>
+    </div>
+    <div class="panel">
+        <div class="panel-heading"><h2>CRM</h2></div>
+        <div class="mini-list">
+            <a href="{% url 'oportunidades_list' %}"><strong>Oportunidades</strong><span>Pipeline e priorizacao.</span></a>
+            <a href="{% url 'fila_carine' %}"><strong>Atendimentos e tarefas</strong><span>Fila de relacionamento.</span></a>
+        </div>
+    </div>
+    <div class="panel">
+        <div class="panel-heading"><h2>Relatorios</h2></div>
+        <div class="mini-list">
+            <a href="{% url 'relatorios' %}"><strong>Visualizacao</strong><span>Relatorios operacionais e exportaveis.</span></a>
+            <a href="{% url 'relatorios_exportar_clientes' %}"><strong>Exportar clientes</strong><span>CSV para analise externa.</span></a>
+            <a href="{% url 'inteligencia' %}"><strong>Inteligencia</strong><span>Indicadores e alertas.</span></a>
+        </div>
+    </div>
+    <div class="panel">
+        <div class="panel-heading"><h2>Documentos e importacoes</h2></div>
+        <div class="mini-list">
+            <a href="{% url 'documentos_list' %}"><strong>Documentos</strong><span>Upload, download e organizacao por categoria.</span></a>
+            <a href="{% url 'clientes_import' %}"><strong>Clientes e planilhas</strong><span>CSV com campos do cadastro.</span></a>
+        </div>
+    </div>
+</div>
 <div class="grid-2 mt-4">
     <div class="panel"><div class="panel-heading"><h2>Clientes por status</h2></div><canvas id="statusChart"></canvas></div>
     <div class="panel"><div class="panel-heading"><h2>Risco das oportunidades</h2></div><canvas id="riskChart"></canvas></div>

@@ -1,5 +1,6 @@
 from django.db import models
 
+from core.managers import EmpresaScopedManager
 from clientes.models import Cliente
 from empresas.models import Empresa
 
@@ -17,8 +18,9 @@ class Oportunidade(models.Model):
         CONCLUIDA = "concluida", "Concluida"
         PERDIDA = "perdida", "Perdida"
 
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name="oportunidades")
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name="oportunidades")
+    oportunidade_id = models.BigAutoField(primary_key=True)
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, db_column="cliente_id_fk", related_name="oportunidades")
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, db_column="empresa_id_fk", related_name="oportunidades")
     tipo = models.CharField(max_length=90)
     prioridade = models.CharField(max_length=20, choices=Prioridade.choices, default=Prioridade.BAIXO)
     score = models.PositiveIntegerField(default=0)
@@ -30,14 +32,20 @@ class Oportunidade(models.Model):
     risco = models.CharField(max_length=20, default="baixo")
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.ABERTA)
     data_reagendamento = models.DateField(null=True, blank=True)
-    criado_em = models.DateTimeField(auto_now_add=True)
-    atualizado_em = models.DateTimeField(auto_now=True)
+    ativo = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(null=True, blank=True)
+
+    objects = EmpresaScopedManager()
+    all_objects = models.Manager()
 
     class Meta:
         ordering = ["prioridade", "-valor_potencial"]
+        db_table = '"crm"."oportunidade_tb"'
         indexes = [
-            models.Index(fields=["status", "prioridade"]),
-            models.Index(fields=["empresa", "status"]),
+            models.Index(fields=["status", "prioridade"], name="oportunidade_status_idx"),
+            models.Index(fields=["empresa", "status"], name="oportunidade_empresa_idx"),
         ]
 
     def __str__(self):
